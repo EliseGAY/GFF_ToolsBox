@@ -82,7 +82,7 @@ def Dict_GFF(gff_file, gff_features):
 # -----------------------------------------------------------#
 import os
 
-def Write_Bed(gff_file, gff_features, outdir=None):
+def Write_Bed(gff_file, gff_features, outdir=None, overwrite=False):
     '''
     Usage
     ------   
@@ -122,9 +122,11 @@ def Write_Bed(gff_file, gff_features, outdir=None):
     bedout_name = os.path.join(outdir, f"{gff_features}.bed")
 
     # Prevent overwriting existing BED file
-    if os.path.exists(bedout_name):
-        raise FileExistsError(f"The file '{bedout_name}' already exists.")
-
+    if os.path.exists(bedout_name) and not overwrite:
+        raise FileExistsError(...)
+    elif os.path.exists(bedout_name) and overwrite:
+        os.remove(bedout_name)
+        
     # Process GFF and write to BED
     list_dict = Dict_GFF(gff_file, gff_features)
 
